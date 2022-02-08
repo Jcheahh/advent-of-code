@@ -4,8 +4,8 @@ import Data.Char
 
 main :: IO ()
 main = do
-  input <- readFile "input/day4.txt"
-  board <- readFile "input/day4board.txt"
+  input <- readFile "2021/input/day4.txt"
+  board <- readFile "2021/input/day4board.txt"
   let inputs = read <$> lines input :: [Int]
       boards = replaceSpace' $ splitWithMtyString $ lines board
 

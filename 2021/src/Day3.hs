@@ -4,7 +4,7 @@ import Data.List
 
 main :: IO ()
 main = do
-  input <- readFile "input/day3.txt"
+  input <- readFile "2021/input/day3.txt"
   let inputs = lines input
       inputs' = transpose inputs
   putStrLn "Part 1:"

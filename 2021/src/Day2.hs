@@ -4,7 +4,7 @@ import Text.Read (readMaybe)
 
 main :: IO ()
 main = do
-  input <- readFile "input/day2.txt"
+  input <- readFile "2021/input/day2.txt"
 
   let inputs = parseCommands $ lines input
 
