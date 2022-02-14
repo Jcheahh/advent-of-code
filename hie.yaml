@@ -1,0 +1,7 @@
+cradle:
+  stack:
+    - path: "year2020/src"
+      component: "year2020:lib"
+
+    - path: "year2021/src"
+      component: "year2021:lib"

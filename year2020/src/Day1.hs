@@ -2,7 +2,7 @@ module Day1 (main) where
 
 main :: IO ()
 main = do
-  input <- readFile "2020/input/day1.txt"
+  input <- readFile "year2020/input/day1.txt"
   let inputs = read <$> lines input :: [Int]
   print "Part 1"
   print $ part1 inputs
@@ -21,6 +21,7 @@ part2 xs = go xs
     go (y : ys) = case searchTwoSumTo (sumOf2020 y) ys of
       Nothing -> go ys
       Just c -> y * c
+    go [] = 0
 
 searchTwoSumTo :: Int -> [Int] -> Maybe Int
 searchTwoSumTo n xs = go xs []

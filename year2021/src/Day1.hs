@@ -4,7 +4,7 @@ import Prelude
 
 main :: IO ()
 main = do
-  input <- readFile "2021/input/day1.txt"
+  input <- readFile "year2021/input/day1.txt"
 
   let inputs = read <$> lines input
   putStrLn "Part 1:"
