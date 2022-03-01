@@ -1,5 +1,6 @@
 module Day5 where
 
+import Data.List
 import Prelude
 
 main :: IO ()
@@ -7,8 +8,11 @@ main = do
   input <- readFile "year2020/input/day5.txt"
   let inputs = parseInput <$> lines input
   let answer = foldr max (-1) $ map findSeat inputs
-  print "Part 1"
+  let answer' = map findSeat inputs
+  putStrLn "Part 1"
   print answer
+  putStrLn "Part 2"
+  print $ whereIsMySeat $ sort answer'
 
 type F = Char
 
@@ -57,3 +61,9 @@ findSeat (xs, ys) = go xs ys 0 127 0 7 0 0
           else go [] ys low up left right up col
       F : fbs -> go fbs ys low (mid low up) left right row col
       B : fbs -> go fbs ys (mid low up + 1) up left right row col
+
+whereIsMySeat :: [Int] -> Int
+whereIsMySeat (x : ys@(y : xs)) = if gap x y then whereIsMySeat ys else x + 1
+  where
+    gap a b = (b - a) == 1
+whereIsMySeat _ = error "error"
