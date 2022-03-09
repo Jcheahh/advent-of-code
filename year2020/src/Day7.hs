@@ -70,8 +70,7 @@ part1 map color = case Map.lookup color map of
 part2 :: Map.Map Bag [Luggage] -> Bag -> Int
 part2 map color = case Map.lookup color map of
   Nothing -> 0
-  Just [] -> 0
   Just bags ->
-    let parent = foldr (\(Luggage count bags) a -> count + a) 0 bags
-        xs = foldr (\(Luggage count bag) acc -> (count * part2 map bag) + acc) 0 bags
-     in parent + xs
+    let parent = foldr (\(Luggage count _) a -> count + a) 0 bags
+        child = foldr (\(Luggage count bag) acc -> (count * part2 map bag) + acc) 0 bags
+     in parent + child
