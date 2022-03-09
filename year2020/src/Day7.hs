@@ -9,9 +9,12 @@ main = do
   input <- readFile "year2020/input/day7.txt"
   let inputs = lines input
       inputs' = fmap words inputs
-      answer = Set.size $ part1' ((parentMap' . func2 . parseInput) inputs') (Bag "shiny" "gold")
+      answer = Set.size $ part1 ((parentMap . func2 . parseInput) inputs') (Bag "shiny" "gold")
+      answer2 = (part2 . func2 . parseInput) inputs' (Bag "shiny" "gold")
   print "Part 1"
   print answer
+  print "Part 2"
+  print answer2
 
 type Color = String
 
@@ -48,18 +51,27 @@ parseLuggage :: [String] -> [Luggage]
 parseLuggage [] = []
 parseLuggage x = parseSMT (take 3 x) : parseLuggage (drop 4 x)
 
-insertParents' :: Bag -> [Luggage] -> Map.Map Bag [Bag] -> Map.Map Bag [Bag]
-insertParents' _ [] emptyMap = emptyMap
-insertParents' p ((Luggage n c) : ncs) emptyMap =
-  Map.insertWith (++) c [p] (insertParents' p ncs emptyMap)
+insertParents :: Bag -> [Luggage] -> Map.Map Bag [Bag] -> Map.Map Bag [Bag]
+insertParents _ [] emptyMap = emptyMap
+insertParents p ((Luggage n c) : ncs) emptyMap =
+  Map.insertWith (++) c [p] (insertParents p ncs emptyMap)
 
-parentMap' :: Map.Map Bag [Luggage] -> Map.Map Bag [Bag]
-parentMap' = Map.foldrWithKey insertParents' Map.empty
+parentMap :: Map.Map Bag [Luggage] -> Map.Map Bag [Bag]
+parentMap = Map.foldrWithKey insertParents Map.empty
 
-part1' :: Map.Map Bag [Bag] -> Bag -> Set.Set Bag
-part1' map color = case Map.lookup color map of
+part1 :: Map.Map Bag [Bag] -> Bag -> Set.Set Bag
+part1 map color = case Map.lookup color map of
   Nothing -> Set.empty
   Just bags ->
     let parent = Set.fromList bags
-        xs = foldr (Set.union . part1' map) Set.empty bags
+        xs = foldr (Set.union . part1 map) Set.empty bags
      in Set.union parent xs
+
+part2 :: Map.Map Bag [Luggage] -> Bag -> Int
+part2 map color = case Map.lookup color map of
+  Nothing -> 0
+  Just [] -> 0
+  Just bags ->
+    let parent = foldr (\(Luggage count bags) a -> count + a) 0 bags
+        xs = foldr (\(Luggage count bag) acc -> (count * part2 map bag) + acc) 0 bags
+     in parent + xs
